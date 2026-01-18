@@ -1,6 +1,6 @@
 # Adaptive Drift-Diffusion Model (Adaptive DDM)
 
-This repository contains the custom code and implementation of the Adaptive Drift-Diffusion Model (Adaptive DDM).
+This repository contains the custom code and implementation of the Adaptive Drift-Diffusion Model (Adaptive DDM) used in the manuscript "Rostral cingulate theta rhythms coordinate flexible deployment of cognitive control" (Kim & Widge, 2026).
 
 The model extends the standard Drift-Diffusion Model (DDM) implemented in the HDDM toolbox by incorporating a reinforcement-learning-based estimate of conflict probability (CP) to dynamically modulate the drift rate.
 
@@ -38,7 +38,7 @@ Note: We will refer to the parent folder of hddm (e.g., /your/path/to/site-packa
 ### 3. Copy Custom Model Files
 Move the provided custom model files from this repository into your HDDM library structure:
 
-1. Copy integrate.pxi to SITE_PACKAGES/
+1. Copy integrate.pxi and pdf.pxi to SITE_PACKAGES/
 2. Copy wfpt_addm.pyx and wfpt_addm_ics.pyx to SITE_PACKAGES/
 3. Copy hddm_addm.py and hddm_addm_ics.py to SITE_PACKAGES/hddm/models/
 
@@ -50,14 +50,13 @@ from distutils.core import setup
 from Cython.Build import cythonize
 import numpy as np
 
-# Ensure we are pointing to the correct include directories
+# Ensure we include numpy headers AND the current directory (for .pxi files)
 setup(
-    include_dirs = [np.get_include()], 
+    include_dirs = [np.get_include(), "."], 
     ext_modules = cythonize(['wfpt_addm.pyx', 'wfpt_addm_ics.pyx'])
 )
 
 Run the compilation from your terminal inside the SITE_PACKAGES folder:
-
 python setup_custom_models.py build_ext --inplace
 
 ### 5. Register Models in __init__.py
@@ -70,7 +69,8 @@ from .hddm_addm_ics import HDDM_addm_ics
 2. Add the model names to the __all__ list:
 __all__ = [..., "HDDM_addm", "HDDM_addm_ics"]
 
----
+### 6. Restart Kernel (Important)
+If you are using Jupyter Notebook or Lab, you must restart the kernel after completing step 5 for the changes to take effect.
 
 ## Demo & Usage
 
@@ -84,7 +84,7 @@ Your input CSV must contain the following columns:
 * ics: (Optional) 1 for Stim-ON, 0 for Stim-OFF
 
 ### Running the Model
-See Run_adaptive_DDM_example.ipynb for a step-by-step demonstration.
+See Run_adaptiveDDM_example.ipynb for a step-by-step demonstration.
 
 * Full Analysis Runtime: ~4-6 hours for 30,000 samples on the full dataset (N=21 subjects).
 * Quick Demo: To verify installation quickly, reduce nsample to 1000 in the notebook. This will run in <10 minutes.
@@ -103,5 +103,3 @@ This project utilizes the HDDM toolbox (Wiecki et al., 2013). We gratefully ackn
 If you use this code in your research, please cite:
 Kim, J., & Widge, A. S. (2025). Cingulate-centered flexible control: physiologic correlates and enhancement by internal capsule stimulation. bioRxiv, 2025.10.15.682151. https://doi.org/10.1101/2025.10.15.682151
 Wiecki TV, Sofer I, Frank MJ (2013). HDDM: Hierarchical Bayesian estimation of the Drift-Diffusion Model in Python. Frontiers in Neuroinformatics 7: 14.
-
-
