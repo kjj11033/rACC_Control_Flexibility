@@ -86,7 +86,7 @@ Your input CSV must contain the following columns:
 ### Running the Model
 See Run_adaptiveDDM_example.ipynb for a step-by-step demonstration.
 
-* Full Analysis Runtime: ~4-6 hours for 30,000 samples on the full dataset (N=21 subjects).
+* Full Analysis Runtime: ~6-10 hours for 30,000 samples on the full dataset (N=21 subjects).
 * Quick Demo: To verify installation quickly, reduce nsample to 1000 in the notebook. This will run in <10 minutes.
 
 ---
